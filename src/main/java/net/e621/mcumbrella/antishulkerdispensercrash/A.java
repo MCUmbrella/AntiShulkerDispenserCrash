@@ -10,23 +10,19 @@ import org.spongepowered.api.block.*;
 import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.util.Direction;
 
-import java.util.HashSet;
-
 @Plugin(
-        id = "antishulkerdispensercrash",
+        id = "asdc",
         name = "AntiShulkerDispenserCrash",
-        version = "1.0-SNAPSHOT",
-        url = "https://github.com/MCUmbrella/",
+        version = "1.0",
+        url = "https://github.com/MCUmbrella/AntiShulkerDispenserCrash/",
         authors = {
                 "MCUmbrella"
-        }
+        },
+        description = "Block possible shulker box dispenser crashes"
 )
 public class A {
-
-    HashSet<BlockTypes> bs=new HashSet<BlockTypes>();
     @Inject
     private Logger l;
-
     @Listener
     public void onServerStart(GameStartedServerEvent event) {
         l.info("owo");

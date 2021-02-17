@@ -6,7 +6,7 @@
 
     <groupId>net.e621.mcumbrella</groupId>
     <artifactId>AntiShulkerDispenserCrash</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
     <packaging>jar</packaging>
 
     <name>AntiShulkerDispenserCrash</name>
@@ -15,7 +15,7 @@
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-    <url>https://github.com/MCUmbrella/</url>
+    <url>https://github.com/MCUmbrella/AntiShulkerDispenserCrash/</url>
 
     <profiles>
         <profile>
