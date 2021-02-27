@@ -60,7 +60,7 @@ public class A {
         )
         {
             Inventory i=(Inventory)e.getTargetBlock().getLocation().get().getTileEntity().get();
-            for(ItemType b:blkList){if(i.contains(b)){e.setCancelled(true);l.warn("Blocked possible shulker box dispenser crash at: X="+e.getTargetBlock().getPosition().getX()+", Y="+e.getTargetBlock().getPosition().getY()+", Z="+e.getTargetBlock().getPosition().getZ());break;}}
+            for(ItemType b:blkList){if(i.contains(b)){e.setCancelled(true);l.warn("Blocked possible shulker box dispenser crash at: X="+e.getTargetBlock().getPosition().getX()+", Y="+e.getTargetBlock().getPosition().getY()+", Z="+e.getTargetBlock().getPosition().getZ()+" in world: "+e.getTargetBlock().getWorldUniqueId());break;}} //TODO: transfer uuid to world name
         }
     }
 }
