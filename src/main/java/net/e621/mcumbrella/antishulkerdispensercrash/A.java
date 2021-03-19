@@ -13,12 +13,10 @@ import org.spongepowered.api.block.*;
 import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.util.Direction;
 
-import java.util.HashSet;
-
 @Plugin(
         id = "asdc",
         name = "AntiShulkerDispenserCrash",
-        version = "1.1",
+        version = "1.2",
         url = "https://github.com/MCUmbrella/AntiShulkerDispenserCrash/",
         authors = {
                 "MCUmbrella"
@@ -27,28 +25,29 @@ import java.util.HashSet;
 )
 public class A {
 
-    HashSet<ItemType> blkList=new HashSet<ItemType>();
+    ItemType[] blkList ={
+            ItemTypes.BLACK_SHULKER_BOX,
+            ItemTypes.BLUE_SHULKER_BOX,
+            ItemTypes.BROWN_SHULKER_BOX,
+            ItemTypes.CYAN_SHULKER_BOX,
+            ItemTypes.GRAY_SHULKER_BOX,
+            ItemTypes.GREEN_SHULKER_BOX,
+            ItemTypes.LIGHT_BLUE_SHULKER_BOX,
+            ItemTypes.LIME_SHULKER_BOX,
+            ItemTypes.MAGENTA_SHULKER_BOX,
+            ItemTypes.ORANGE_SHULKER_BOX,
+            ItemTypes.PINK_SHULKER_BOX,
+            ItemTypes.PURPLE_SHULKER_BOX,
+            ItemTypes.RED_SHULKER_BOX,
+            ItemTypes.SILVER_SHULKER_BOX,
+            ItemTypes.WHITE_SHULKER_BOX,
+            ItemTypes.YELLOW_SHULKER_BOX
+    };
 
     @Inject
     private Logger l;
     @Listener
     public void onServerStart(GameStartedServerEvent event) {
-        blkList.add(ItemTypes.BLACK_SHULKER_BOX);
-        blkList.add(ItemTypes.BLUE_SHULKER_BOX);
-        blkList.add(ItemTypes.BROWN_SHULKER_BOX);
-        blkList.add(ItemTypes.CYAN_SHULKER_BOX);
-        blkList.add(ItemTypes.GRAY_SHULKER_BOX);
-        blkList.add(ItemTypes.GREEN_SHULKER_BOX);
-        blkList.add(ItemTypes.LIGHT_BLUE_SHULKER_BOX);
-        blkList.add(ItemTypes.LIME_SHULKER_BOX);
-        blkList.add(ItemTypes.MAGENTA_SHULKER_BOX);
-        blkList.add(ItemTypes.ORANGE_SHULKER_BOX);
-        blkList.add(ItemTypes.PINK_SHULKER_BOX);
-        blkList.add(ItemTypes.PURPLE_SHULKER_BOX);
-        blkList.add(ItemTypes.RED_SHULKER_BOX);
-        blkList.add(ItemTypes.SILVER_SHULKER_BOX);
-        blkList.add(ItemTypes.WHITE_SHULKER_BOX);
-        blkList.add(ItemTypes.YELLOW_SHULKER_BOX);
         l.info("owo");
     }
     @Listener
@@ -60,7 +59,7 @@ public class A {
         )
         {
             Inventory i=(Inventory)e.getTargetBlock().getLocation().get().getTileEntity().get();
-            for(ItemType b:blkList){if(i.contains(b)){e.setCancelled(true);l.warn("Blocked possible shulker box dispenser crash at: X="+e.getTargetBlock().getPosition().getX()+", Y="+e.getTargetBlock().getPosition().getY()+", Z="+e.getTargetBlock().getPosition().getZ()+" in world: "+e.getTargetBlock().getWorldUniqueId());break;}} //TODO: transfer uuid to world name
+            for(ItemType b: blkList){if(i.contains(b)){e.setCancelled(true);l.warn("Blocked possible shulker box dispenser crash at: X="+e.getTargetBlock().getPosition().getX()+", Y="+e.getTargetBlock().getPosition().getY()+", Z="+e.getTargetBlock().getPosition().getZ()+" in world: "+e.getTargetBlock().getWorldUniqueId());break;}} //TODO: transfer uuid to world name
         }
     }
 }
