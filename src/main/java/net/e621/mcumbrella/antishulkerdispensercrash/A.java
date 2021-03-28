@@ -25,7 +25,7 @@ import org.spongepowered.api.util.Direction;
 )
 public class A {
 
-    ItemType[] blkList ={
+    static final ItemType[] blkList ={
             ItemTypes.BLACK_SHULKER_BOX,
             ItemTypes.BLUE_SHULKER_BOX,
             ItemTypes.BROWN_SHULKER_BOX,
