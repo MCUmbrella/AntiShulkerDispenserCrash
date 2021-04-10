@@ -2,6 +2,7 @@ package net.e621.mcumbrella.antishulkerdispensercrash;
 
 import com.google.inject.Inject;
 import org.slf4j.Logger;
+import org.spongepowered.api.Sponge;
 import org.spongepowered.api.event.game.state.GameStartedServerEvent;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.item.ItemType;
@@ -25,7 +26,8 @@ import org.spongepowered.api.util.Direction;
 )
 public class A
 {
-    boolean accurateDetection =false;
+    boolean accurateDetection=true;
+    boolean warnConsole=true;
     static final ItemType[] blkList=
     {
         ItemTypes.RED_SHULKER_BOX,
@@ -46,51 +48,59 @@ public class A
     };
 
     @Inject
-    private Logger l;
+    Logger l;
 
-    abstract class ASDC
+    public class CheckerAccurate
     {
-        abstract void onSDC(TickBlockEvent e);
+        @Listener
+        public void onSDC(TickBlockEvent e)
+        {
+            if(e.getTargetBlock().getState().getType()==BlockTypes.DISPENSER &&(
+                    (e.getTargetBlock().getPosition().getY()==255&&e.getTargetBlock().getExtendedState().get(Keys.DIRECTION).get()==Direction.UP)||
+                            (e.getTargetBlock().getPosition().getY()==0&&e.getTargetBlock().getExtendedState().get(Keys.DIRECTION).get()==Direction.DOWN))
+            )
+            {
+                Inventory i=(Inventory)e.getTargetBlock().getLocation().get().getTileEntity().get();
+                for(ItemType b: blkList)
+                {
+                    if(i.contains(b))
+                    {
+                        e.setCancelled(true);
+                        if(warnConsole){l.warn("Blocked possible shulker box dispenser crash at: X="+e.getTargetBlock().getPosition().getX()+", Y="+e.getTargetBlock().getPosition().getY()+", Z="+e.getTargetBlock().getPosition().getZ()+" in world: "+e.getTargetBlock().getWorldUniqueId());}
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    public class Checker
+    {
+        @Listener
+        public void onSDC(TickBlockEvent e)
+        {
+            if(e.getTargetBlock().getState().getType()==BlockTypes.DISPENSER &&(
+                    (e.getTargetBlock().getPosition().getY()==255&&e.getTargetBlock().getExtendedState().get(Keys.DIRECTION).get()==Direction.UP)||
+                            (e.getTargetBlock().getPosition().getY()==0&&e.getTargetBlock().getExtendedState().get(Keys.DIRECTION).get()==Direction.DOWN))
+            )
+            {
+                e.setCancelled(true);
+                if(warnConsole){l.warn("Blocked dispenser action at: X="+e.getTargetBlock().getPosition().getX()+", Y="+e.getTargetBlock().getPosition().getY()+", Z="+e.getTargetBlock().getPosition().getZ()+" in world: "+e.getTargetBlock().getWorldUniqueId());}
+            }
+        }
     }
 
     @Listener
     public void onServerStart(GameStartedServerEvent event)
     {
-
         if(accurateDetection)
         {
-            ASDC a=new ASDC()
-            {
-                @Override
-                void onSDC(TickBlockEvent e) {
-                ;
-                }
-            };
+            Sponge.getEventManager().registerListeners(this, new CheckerAccurate());
         }
         else
         {
-            ASDC b=new ASDC()
-            {
-                @Override
-                void onSDC(TickBlockEvent e)
-                {
-                    ;
-                }
-            };
+            Sponge.getEventManager().registerListeners(this, new Checker());
         }
 
         l.info("owo");
-    }
-    @Listener
-    public void onSDC(TickBlockEvent e)
-    {
-        if(e.getTargetBlock().getState().getType()==BlockTypes.DISPENSER &&(
-                (e.getTargetBlock().getPosition().getY()==255&&e.getTargetBlock().getExtendedState().get(Keys.DIRECTION).get()==Direction.UP)||
-                (e.getTargetBlock().getPosition().getY()==0&&e.getTargetBlock().getExtendedState().get(Keys.DIRECTION).get()==Direction.DOWN))
-        )
-        {
-            Inventory i=(Inventory)e.getTargetBlock().getLocation().get().getTileEntity().get();
-            for(ItemType b: blkList){if(i.contains(b)){e.setCancelled(true);l.warn("Blocked possible shulker box dispenser crash at: X="+e.getTargetBlock().getPosition().getX()+", Y="+e.getTargetBlock().getPosition().getY()+", Z="+e.getTargetBlock().getPosition().getZ()+" in world: "+e.getTargetBlock().getWorldUniqueId());break;}} //TODO: transfer uuid to world name
-        }
     }
 }
