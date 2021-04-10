@@ -2,6 +2,7 @@ package net.e621.mcumbrella.antishulkerdispensercrash;
 
 import com.google.inject.Inject;
 import org.slf4j.Logger;
+import org.spongepowered.api.Server;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.event.game.state.GameStartedServerEvent;
 import org.spongepowered.api.event.Listener;
@@ -13,9 +14,11 @@ import org.spongepowered.api.event.block.*;
 import org.spongepowered.api.block.*;
 import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.util.Direction;
+import org.spongepowered.api.world.World;
 
 import java.io.*;
 import java.util.Properties;
+import java.util.UUID;
 
 @Plugin(
         id = "asdc",
@@ -70,7 +73,7 @@ public class A
                     if(i.contains(b))
                     {
                         e.setCancelled(true);
-                        if(warnConsole){l.warn("Blocked possible shulker box dispenser crash at: X="+e.getTargetBlock().getPosition().getX()+", Y="+e.getTargetBlock().getPosition().getY()+", Z="+e.getTargetBlock().getPosition().getZ()+" in world: "+e.getTargetBlock().getWorldUniqueId());}
+                        if(warnConsole){l.warn("Blocked possible shulker box dispenser crash at: X="+e.getTargetBlock().getPosition().getX()+", Y="+e.getTargetBlock().getPosition().getY()+", Z="+e.getTargetBlock().getPosition().getZ()+" in world: "+Sponge.getServer().getWorld(e.getTargetBlock().getWorldUniqueId()).get().getName());}
                         break;
                     }
                 }
@@ -88,7 +91,7 @@ public class A
             )
             {
                 e.setCancelled(true);
-                if(warnConsole){l.warn("Blocked suspicious dispenser action at: X="+e.getTargetBlock().getPosition().getX()+", Y="+e.getTargetBlock().getPosition().getY()+", Z="+e.getTargetBlock().getPosition().getZ()+" in world: "+e.getTargetBlock().getWorldUniqueId());}
+                if(warnConsole){l.warn("Blocked suspicious dispenser action at: X="+e.getTargetBlock().getPosition().getX()+", Y="+e.getTargetBlock().getPosition().getY()+", Z="+e.getTargetBlock().getPosition().getZ()+" in world: "+Sponge.getServer().getWorld(e.getTargetBlock().getWorldUniqueId()).get().getName());}
             }
         }
     }
