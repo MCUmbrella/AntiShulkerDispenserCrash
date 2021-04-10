@@ -6,7 +6,7 @@
 
     <groupId>net.e621.mcumbrella</groupId>
     <artifactId>AntiShulkerDispenserCrash</artifactId>
-    <version>1.1</version>
+    <version>1.2</version>
     <packaging>jar</packaging>
 
     <name>AntiShulkerDispenserCrash</name>
