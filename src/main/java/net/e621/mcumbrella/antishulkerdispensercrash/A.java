@@ -23,31 +23,62 @@ import org.spongepowered.api.util.Direction;
         },
         description = "Block possible shulker box dispenser crashes"
 )
-public class A {
-
-    static final ItemType[] blkList ={
-            ItemTypes.BLACK_SHULKER_BOX,
-            ItemTypes.BLUE_SHULKER_BOX,
-            ItemTypes.BROWN_SHULKER_BOX,
-            ItemTypes.CYAN_SHULKER_BOX,
-            ItemTypes.GRAY_SHULKER_BOX,
-            ItemTypes.GREEN_SHULKER_BOX,
-            ItemTypes.LIGHT_BLUE_SHULKER_BOX,
-            ItemTypes.LIME_SHULKER_BOX,
-            ItemTypes.MAGENTA_SHULKER_BOX,
-            ItemTypes.ORANGE_SHULKER_BOX,
-            ItemTypes.PINK_SHULKER_BOX,
-            ItemTypes.PURPLE_SHULKER_BOX,
-            ItemTypes.RED_SHULKER_BOX,
-            ItemTypes.SILVER_SHULKER_BOX,
-            ItemTypes.WHITE_SHULKER_BOX,
-            ItemTypes.YELLOW_SHULKER_BOX
+public class A
+{
+    boolean accurateDetection =false;
+    static final ItemType[] blkList=
+    {
+        ItemTypes.RED_SHULKER_BOX,
+        ItemTypes.BLACK_SHULKER_BOX,
+        ItemTypes.WHITE_SHULKER_BOX,
+        ItemTypes.BLUE_SHULKER_BOX,
+        ItemTypes.BROWN_SHULKER_BOX,
+        ItemTypes.CYAN_SHULKER_BOX,
+        ItemTypes.GRAY_SHULKER_BOX,
+        ItemTypes.GREEN_SHULKER_BOX,
+        ItemTypes.LIGHT_BLUE_SHULKER_BOX,
+        ItemTypes.LIME_SHULKER_BOX,
+        ItemTypes.MAGENTA_SHULKER_BOX,
+        ItemTypes.ORANGE_SHULKER_BOX,
+        ItemTypes.PINK_SHULKER_BOX,
+        ItemTypes.SILVER_SHULKER_BOX,
+        ItemTypes.YELLOW_SHULKER_BOX
     };
 
     @Inject
     private Logger l;
+
+    abstract class ASDC
+    {
+        abstract void onSDC(TickBlockEvent e);
+    }
+
     @Listener
-    public void onServerStart(GameStartedServerEvent event) {
+    public void onServerStart(GameStartedServerEvent event)
+    {
+
+        if(accurateDetection)
+        {
+            ASDC a=new ASDC()
+            {
+                @Override
+                void onSDC(TickBlockEvent e) {
+                ;
+                }
+            };
+        }
+        else
+        {
+            ASDC b=new ASDC()
+            {
+                @Override
+                void onSDC(TickBlockEvent e)
+                {
+                    ;
+                }
+            };
+        }
+
         l.info("owo");
     }
     @Listener
