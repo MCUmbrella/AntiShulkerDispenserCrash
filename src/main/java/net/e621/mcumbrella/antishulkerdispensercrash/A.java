@@ -14,6 +14,9 @@ import org.spongepowered.api.block.*;
 import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.util.Direction;
 
+import java.io.*;
+import java.util.Properties;
+
 @Plugin(
         id = "asdc",
         name = "AntiShulkerDispenserCrash",
@@ -28,6 +31,7 @@ public class A
 {
     boolean accurateDetection=true;
     boolean warnConsole=true;
+    final static String cfgPath="."+File.separator+"config"+File.separator+"ASDC"+ File.separator+"config.properties";
     static final ItemType[] blkList=
     {
         ItemTypes.RED_SHULKER_BOX,
@@ -57,7 +61,7 @@ public class A
         {
             if(e.getTargetBlock().getState().getType()==BlockTypes.DISPENSER &&(
                     (e.getTargetBlock().getPosition().getY()==255&&e.getTargetBlock().getExtendedState().get(Keys.DIRECTION).get()==Direction.UP)||
-                            (e.getTargetBlock().getPosition().getY()==0&&e.getTargetBlock().getExtendedState().get(Keys.DIRECTION).get()==Direction.DOWN))
+                    (e.getTargetBlock().getPosition().getY()==0&&e.getTargetBlock().getExtendedState().get(Keys.DIRECTION).get()==Direction.DOWN))
             )
             {
                 Inventory i=(Inventory)e.getTargetBlock().getLocation().get().getTileEntity().get();
@@ -80,27 +84,59 @@ public class A
         {
             if(e.getTargetBlock().getState().getType()==BlockTypes.DISPENSER &&(
                     (e.getTargetBlock().getPosition().getY()==255&&e.getTargetBlock().getExtendedState().get(Keys.DIRECTION).get()==Direction.UP)||
-                            (e.getTargetBlock().getPosition().getY()==0&&e.getTargetBlock().getExtendedState().get(Keys.DIRECTION).get()==Direction.DOWN))
+                    (e.getTargetBlock().getPosition().getY()==0&&e.getTargetBlock().getExtendedState().get(Keys.DIRECTION).get()==Direction.DOWN))
             )
             {
                 e.setCancelled(true);
-                if(warnConsole){l.warn("Blocked dispenser action at: X="+e.getTargetBlock().getPosition().getX()+", Y="+e.getTargetBlock().getPosition().getY()+", Z="+e.getTargetBlock().getPosition().getZ()+" in world: "+e.getTargetBlock().getWorldUniqueId());}
+                if(warnConsole){l.warn("Blocked suspicious dispenser action at: X="+e.getTargetBlock().getPosition().getX()+", Y="+e.getTargetBlock().getPosition().getY()+", Z="+e.getTargetBlock().getPosition().getZ()+" in world: "+e.getTargetBlock().getWorldUniqueId());}
             }
+        }
+    }
+
+    void loadCfg()
+    {
+        try
+        {
+            new File(new File(cfgPath).getParent()).mkdirs();
+            File file=new File(cfgPath);
+            if(!file.exists())
+            {
+                l.info("Creating default config");
+                BufferedWriter bw = new BufferedWriter(new FileWriter(file));
+                bw.write(
+                        "accurateDetection=true"+System.getProperty("line.separator")
+                        +"warnConsole=true"+System.getProperty("line.separator")
+                );
+                bw.flush();
+                bw.close();
+            }
+            BufferedReader cfg = new BufferedReader(new FileReader(file));
+            Properties p = new Properties();
+            p.load(cfg);
+            accurateDetection=Boolean.parseBoolean(p.getProperty("accurateDetection"));
+            warnConsole=Boolean.parseBoolean(p.getProperty("warnConsole"));
+
+        }catch(Exception x)
+        {
+            l.warn("Can't load config: "+x.toString());
         }
     }
 
     @Listener
     public void onServerStart(GameStartedServerEvent event)
     {
+        loadCfg();
         if(accurateDetection)
         {
             Sponge.getEventManager().registerListeners(this, new CheckerAccurate());
+            l.info("Using accurate detection");
         }
         else
         {
             Sponge.getEventManager().registerListeners(this, new Checker());
+            l.info("Using fast detection");
         }
 
-        l.info("owo");
+        l.info("Initialized");
     }
 }
